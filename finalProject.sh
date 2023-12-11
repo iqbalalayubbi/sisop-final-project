@@ -8,7 +8,7 @@
 
 # PROMPT_DIRTRIM=1
 
-SELECTOR_COL=$'\e[1;33m'
+SELECTOR_COL=$'\e[1;31m'
 NC=$'\e[0m'
 
 readKeyboard(){
@@ -53,6 +53,24 @@ showMenu(){
     readKeyboard
 }
 
+checkBattery(){
+    battery_info=$(acpi)
+
+    percentage=$(echo "$battery_info" | grep -oP '\d+%' | tr -d '%')
+
+    echo "Baterai kamu saat ini : ${SELECTOR_COL}$percentage%${NC}"
+    read -p "tekan enter untuk kembali...."
+}
+
+openBrowser(){
+    cd "/usr/bin" && firefox
+}
+
+executeProgram(){
+    python3 "hello.py"
+    read -p "tekan enter untuk kembali...."
+}
+
 createMenu(){
     options=$1
     selected=0
@@ -71,32 +89,106 @@ createMenu(){
         fi
     done
 
-    echo "tampilkan menu berikut"
-}
-
-
-fileMenu(){
-    options=("Create Folder" "Create File" "Delete File" "Delete Folder")
-
     case $selected in
-        "0")
-            echo "Create Folder"
+        "0") # file
+            fileMenu
             ;;
-        "1")
-            echo "buka browser"
+        "1") # open browser
+            openBrowser
             ;;
-        "2")
-            echo "Jalankan File"
+        "2") # execute code 
+            executeProgram
             ;;
-        "3")
-            echo "Keluar Aplikasi"
+        "3") # cek battery
+            checkBattery
+            ;;
+        "4")
+            exit
             ;;
     esac
+    main
 }
 
+showAllFile(){
+    yourfilenames=`ls -l *.*`
+    for filename in $yourfilenames
+    do
+        echo $filename
+        # show the extention
+        # filenamedata=$(basename -- $filename)
+        # extension="${filenamedata##*.}"
+        # echo $extension
+    done
+    read -p "tekan enter untuk kembali...."
+}
+
+fileMenu(){
+    isEnter=false
+    selected=0
+    options=("Buat Folder" "Buat File" "Hapus Folder" "Hapus File" "Lihat semua berkas" "Kembali")
+    optionLength=${#options[@]}
+
+    while true
+    do
+        clear
+        showMenu
+        # when user press enter
+        if [ $isEnter == true ]
+        then
+            case $selected in
+                "0")
+                    echo -n "nama folder : "
+                    read foldername
+                    mkdir "${foldername}"
+                    echo "folder ${foldername} berhasil dibuat"
+                    ;;
+                "1")
+                    echo -n "nama file : "
+                    read filename
+                    touch "${filename}"
+                    echo "file ${filename} berhasil dibuat"
+                    ;;
+                "2")
+                    echo -n "Nama Folder : "
+                    read foldername
+                    rmdir "${foldername}"
+                    echo "folder berhasil dihapus"
+                    ;;
+                "3")
+                    echo -n "Nama File : "
+                    read filename
+                    rm "${filename}"
+                    echo "file berhasil dihapus"
+                    ;;
+                "4")
+                    showAllFile
+                    ;;
+                "5")
+                    main
+                    ;;
+            esac
+            isEnter=false
+        fi
+    done
+}
+
+
+
 main(){
-    options=("Manipulasi Folder" "Buka Browser" "Jalankan File" "Keluar Aplikasi")
+    options=("Manipulasi Folder" "Buka Browser" "Eksekusi Program" "Cek Baterai" "Keluar Aplikasi")
     createMenu "${options[@]}"
 }
 
 main
+# filename=$(basename -- "hello.py")
+# extension="${filename##*.}"
+
+# echo $extension
+
+# foldername=`ls -d */`
+# stringlength="${#foldername}"
+# echo $foldername | cut -c "1-$(( stringlength - 1 ))"
+
+# newString="hello world"
+# lengthWord="${#newString}"
+# echo $(( lengthWord - 1))
