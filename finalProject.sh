@@ -1,14 +1,8 @@
 #! /usr/bin/bash
 
-# bikin folder baru
-# manipulasi hak akses berkas
-# buka firefox
-# jalankan program python
-# keluar program
-
 # PROMPT_DIRTRIM=1
 
-SELECTOR_COL=$'\e[1;31m'
+SELECTOR_COL=$'\e[1;32m'
 NC=$'\e[0m'
 
 readKeyboard(){
@@ -66,8 +60,57 @@ openBrowser(){
     cd "/usr/bin" && firefox
 }
 
+
+isFileEmpty(){
+    filename=$1
+    if [ -s $filename ]
+    then
+        echo false
+    else
+        echo true
+    fi
+}
+
 executeProgram(){
-    python3 "hello.py"
+    jsFile=`ls *.js`
+    pyFile=`ls *.py`
+
+    isEnter=false
+    selected=0
+    allfile="${jsFile} ${pyFile} Kembali"
+    options=($allfile)
+    optionLength=${#options[@]}
+
+    while true
+    do
+        clear
+        showMenu
+
+        if [ $isEnter == true ]
+        then
+            # back menu
+            if [ $selected == $(( optionLength - 1)) ]
+            then
+                main
+            fi
+
+            extension="${options[$selected]##*.}"
+
+            if [ $( isFileEmpty "${options[$selected]}" ) == true ]
+            then
+                echo "file masih kosoong"
+            else
+                if [ $extension == "js" ]
+                then
+                    node "${options[$selected]}"
+                else
+                    python3 "${options[$selected]}"
+                fi
+            fi
+            read -p "tekan enter untuk kembali...."
+            isEnter=false
+        fi
+    done
     read -p "tekan enter untuk kembali...."
 }
 
@@ -180,6 +223,9 @@ main(){
 }
 
 main
+
+# echo $( isFileEmpty "main.py" )
+
 # filename=$(basename -- "hello.py")
 # extension="${filename##*.}"
 
