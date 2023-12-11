@@ -11,34 +11,6 @@
 SELECTOR_COL=$'\e[1;33m'
 NC=$'\e[0m'
 
-myfunc(){
-    echo "hello"
-}
-
-selectedMenu(){
-    options=("Create Folder" "Create File" "Delete File" "Delete Folder")
-
-    case $selected in
-        "0")
-            myfunc
-            # folderManipulate
-            # echo "manipulasi folder"
-            # create folder
-            # create file
-            # delete file/folder
-            ;;
-        "1")
-            echo "buka browser"
-            ;;
-        "2")
-            echo "Jalankan File"
-            ;;
-        "3")
-            echo "Keluar Aplikasi"
-            ;;
-    esac
-}
-
 readKeyboard(){
     # read the keyboard input
     read -rsn1 key
@@ -62,8 +34,7 @@ readKeyboard(){
             ;;
         "")
             clear
-            selectedMenu $selected
-            read -p "Press Enter to continue..."
+            isEnter=true
             ;;
     esac
 }
@@ -78,29 +49,54 @@ showMenu(){
             echo "${NC}  ${options[$i]}"
         fi
     done
+
+    readKeyboard
 }
 
 createMenu(){
     options=$1
     selected=0
     optionLength=${#options[@]}
+    isEnter=false
 
     while true
     do
         clear
         showMenu
-        readKeyboard
+
+        # when user press enter
+        if [ $isEnter == true ]
+        then
+            break
+        fi
     done
+
+    echo "tampilkan menu berikut"
 }
 
 
-# while true
-# do
-#     clear
-#     showMenu
-#     readKeyboard
-# done
+fileMenu(){
+    options=("Create Folder" "Create File" "Delete File" "Delete Folder")
 
-# options=("Manipulasi Folder" "Buka Browser" "Jalankan File" "Keluar Aplikasi")
-# createMenu $options
+    case $selected in
+        "0")
+            echo "Create Folder"
+            ;;
+        "1")
+            echo "buka browser"
+            ;;
+        "2")
+            echo "Jalankan File"
+            ;;
+        "3")
+            echo "Keluar Aplikasi"
+            ;;
+    esac
+}
 
+main(){
+    options=("Manipulasi Folder" "Buka Browser" "Jalankan File" "Keluar Aplikasi")
+    createMenu "${options[@]}"
+}
+
+main
