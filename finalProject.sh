@@ -4,6 +4,8 @@
 
 SELECTOR_COL=$'\e[1;32m'
 NC=$'\e[0m'
+RED_COL=$'\e[1;31m'
+GREEN_COL=$'\e[1;32m'
 
 readKeyboard(){
     # read the keyboard input
@@ -60,17 +62,6 @@ openBrowser(){
     cd "/usr/bin" && firefox
 }
 
-
-isFileEmpty(){
-    filename=$1
-    if [ -s $filename ]
-    then
-        echo false
-    else
-        echo true
-    fi
-}
-
 executeProgram(){
     jsFile=`ls *.js`
     pyFile=`ls *.py`
@@ -96,17 +87,19 @@ executeProgram(){
 
             extension="${options[$selected]##*.}"
 
-            if [ $( isFileEmpty "${options[$selected]}" ) == true ]
+            # check file is empty
+            if [ -s "${options[$selected]}" ]
             then
-                echo "file masih kosoong"
-            else
                 if [ $extension == "js" ]
                 then
                     node "${options[$selected]}"
                 else
                     python3 "${options[$selected]}"
                 fi
+            else
+                echo "file masih kosoong"
             fi
+            
             read -p "tekan enter untuk kembali...."
             isEnter=false
         fi
@@ -179,29 +172,55 @@ fileMenu(){
         if [ $isEnter == true ]
         then
             case $selected in
-                "0")
+                "0") # create folder
                     echo -n "nama folder : "
                     read foldername
-                    mkdir "${foldername}"
-                    echo "folder ${foldername} berhasil dibuat"
+                    # check is file exist
+                    if [ -e "${foldername}" ]
+                    then
+                        echo "${RED_COL}folder sudah ada${NC}"
+                    else
+                        mkdir "${foldername}"
+                        echo "${GREEN_COL}folder ${foldername} berhasil dibuat${NC}"
+                    fi
+                    read -p "Enter untuk kembali..."
                     ;;
-                "1")
+                "1") # create file
                     echo -n "nama file : "
                     read filename
-                    touch "${filename}"
-                    echo "file ${filename} berhasil dibuat"
+                    if [ -e "${filename}" ]
+                    then
+                        echo "${RED_COL}file sudah ada${NC}"
+                    else
+                        touch "${filename}"
+                        echo "${GREEN_COL}file ${filename} berhasil dibuat${NC}"
+                    fi
+                    read -p "Enter untuk kembali..."
                     ;;
-                "2")
+                "2") # delete folder
                     echo -n "Nama Folder : "
                     read foldername
-                    rmdir "${foldername}"
-                    echo "folder berhasil dihapus"
+                    if [ -e "${foldername}" ]
+                    then
+                        rmdir "${foldername}"
+                        echo "${GREEN_COL}folder berhasil dihapus${NC}"
+                    else
+                        echo "${RED_COL}folder ${foldername} tidak ada${NC}"
+                    fi
+                    read -p "Enter untuk kembali..."
                     ;;
-                "3")
+                "3") # delete file
                     echo -n "Nama File : "
                     read filename
-                    rm "${filename}"
-                    echo "file berhasil dihapus"
+                    if [ -e "${filename}" ]
+                    then
+                        rm "${filename}"
+                        echo "${GREEN_COL}file berhasil dihapus${NC}"
+                    else
+                        echo "${RED_COL}file ${filename} tidak ada${NC}"
+                    fi
+                    read -p "Enter untuk kembali..."
+
                     ;;
                 "4")
                     showAllFile
@@ -215,8 +234,6 @@ fileMenu(){
     done
 }
 
-
-
 main(){
     options=("Manipulasi Folder" "Buka Browser" "Eksekusi Program" "Cek Baterai" "Keluar Aplikasi")
     createMenu "${options[@]}"
@@ -224,7 +241,13 @@ main(){
 
 main
 
-# echo $( isFileEmpty "main.py" )
+# options=("controller" "contr")
+# if [ -e "${options[1]}" ]
+# then
+#     echo "file ada"
+# else
+#     echo "file tidak ada"
+# fi
 
 # filename=$(basename -- "hello.py")
 # extension="${filename##*.}"
