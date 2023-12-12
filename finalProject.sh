@@ -63,15 +63,15 @@ openBrowser(){
 }
 
 executeProgram(){
-    jsFile=`ls *.js`
-    pyFile=`ls *.py`
-    clear
+    jsFile=`ls *.js` || ""
+    pyFile=`ls *.py` || ""
 
     isEnter=false
     selected=0
     allfile="${jsFile} ${pyFile} Kembali"
     options=($allfile)
     optionLength=${#options[@]}
+    clear
 
     if [ "$jsFile" = "" -a "$pyFile" = "" ]
     then
@@ -84,11 +84,6 @@ executeProgram(){
     do
         clear
         showMenu
-
-        if [ $optionLength <= 1 ]
-        then
-            echo "tidak menemukan file pemrograman"
-        fi
 
         if [ $isEnter == true ]
         then
@@ -202,7 +197,7 @@ writeFile(){
     isEnter=false
     selected=0
     # options=("Vim Editor" "Nano Editor" "Kembali")
-    allFile=`ls *.sh *.c *.cpp *.html *.js *.html`
+    allFile=`ls *.sh *.c *.cpp *.html *.js *.html *.py`
     allMenu="${allFile} Kembali"
     options=($allMenu)
     optionLength=${#options[@]}
