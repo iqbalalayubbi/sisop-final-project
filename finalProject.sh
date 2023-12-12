@@ -6,6 +6,9 @@ SELECTOR_COL=$'\e[1;32m'
 NC=$'\e[0m'
 RED_COL=$'\e[1;31m'
 GREEN_COL=$'\e[1;32m'
+BLUE_COL=$'\e[1;34m'
+PURPLE_COL=$'\e[1;35m'
+CYAN_COL=$'\e[1;36m'
 
 readKeyboard(){
     # read the keyboard input
@@ -227,10 +230,47 @@ writeFile(){
     done
 }
 
+changePermissions(){
+    isEnter=false
+    selected=0
+    allFile=`ls`
+    allMenu="${allFile} Kembali"
+    options=($allMenu)
+    optionLength=${#options[@]}
+
+    while true
+    do
+        clear
+        showMenu
+
+        if [ $isEnter == true ]
+        then
+            isEnter=false
+            if [ $selected == $(( optionLength - 1)) ]
+            then 
+                fileMenu
+            else
+                filename="${options[$selected]}"
+                echo "${RED_COL}4 -> read"
+                echo "${PURPLE_COL}6 -> read and write"
+                echo "${CYAN_COL}7 -> read, write, and execute${NC}"
+                echo -n "Masukkan nomor hak akses : "
+                read numAccess
+                if [ ${#numAccess} != 0 ]
+                then
+                    chmod $numAccess $filename
+                    read -p "Hak akses file $filename berhasil diubah (enter) "
+                fi
+                fileMenu
+            fi
+        fi
+    done
+}
+
 fileMenu(){
     isEnter=false
     selected=0
-    options=("Edit File" "Buat Folder" "Buat File" "Hapus Folder" "Hapus File" "Lihat semua berkas" "Kembali")
+    options=("Edit File" "Buat Folder" "Buat File" "Hapus Folder" "Hapus File" "Lihat semua berkas" "ubah hak akses" "Kembali")
     optionLength=${#options[@]}
 
     while true
@@ -242,7 +282,7 @@ fileMenu(){
         then
             isEnter=false
             case $selected in
-                "0") # create folder
+                "0") # edit file
                     chooseEditor
                     read -p "Enter untuk kembali..."
                     ;;
@@ -316,6 +356,9 @@ fileMenu(){
                     showAllFile
                     ;;
                 "6")
+                    changePermissions
+                    ;;
+                "7")
                     main
                     ;;
             esac
@@ -328,4 +371,30 @@ main(){
     createMenu "${options[@]}"
 }
 
-main
+# main
+
+
+fileAccess=`getfacl index.js`
+for word in $fileAccess
+do
+    userAccess="^user::"
+    groupAccess="^group::"
+    othersAccess="^other::"
+
+    if [[ $word =~ $userAccess ]]
+    then
+        echo ${word:6}
+    fi
+
+    if [[ $word =~ $groupAccess ]]
+    then
+        echo ${word:7}
+    fi
+
+    if [[ $word =~ $othersAccess ]]
+    then
+        echo ${word:7}
+    fi
+
+done
+# filename="-rw ini"
