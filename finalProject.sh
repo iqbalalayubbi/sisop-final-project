@@ -231,12 +231,49 @@ writeFile(){
 }
 
 changePermissions(){
+    allFile=`ls`
+    allFileAccess=""
+    allFileName=""
+
+    for filename in $allFile
+    do
+        allFileName+="${filename} "
+        fileAccess=`getfacl $filename`
+        allAccess="${filename}"
+
+        for word in $fileAccess
+        do
+            userAccess="^user::"
+            groupAccess="^group::"
+            othersAccess="^other::"
+        
+
+            if [[ $word =~ $userAccess ]]
+            then
+                allAccess+="__"+${word:6}
+            fi
+
+            if [[ $word =~ $groupAccess ]]
+            then
+                allAccess+=${word:7}
+            fi
+
+            if [[ $word =~ $othersAccess ]]
+            then
+                allAccess+=${word:7}
+            fi
+
+        done
+
+        allFileAccess+="${allAccess} "
+    done
+
     isEnter=false
     selected=0
-    allFile=`ls`
-    allMenu="${allFile} Kembali"
-    options=($allMenu)
+    allMenu="${allFileAccess} Kembali"
+    options=($allMenu) 
     optionLength=${#options[@]}
+    optionsAllFile=($allFileName)
 
     while true
     do
@@ -250,7 +287,7 @@ changePermissions(){
             then 
                 fileMenu
             else
-                filename="${options[$selected]}"
+                filename="${optionsAllFile[$selected]}"
                 echo "${RED_COL}4 -> read"
                 echo "${PURPLE_COL}6 -> read and write"
                 echo "${CYAN_COL}7 -> read, write, and execute${NC}"
@@ -371,30 +408,4 @@ main(){
     createMenu "${options[@]}"
 }
 
-# main
-
-
-fileAccess=`getfacl index.js`
-for word in $fileAccess
-do
-    userAccess="^user::"
-    groupAccess="^group::"
-    othersAccess="^other::"
-
-    if [[ $word =~ $userAccess ]]
-    then
-        echo ${word:6}
-    fi
-
-    if [[ $word =~ $groupAccess ]]
-    then
-        echo ${word:7}
-    fi
-
-    if [[ $word =~ $othersAccess ]]
-    then
-        echo ${word:7}
-    fi
-
-done
-# filename="-rw ini"
+main
