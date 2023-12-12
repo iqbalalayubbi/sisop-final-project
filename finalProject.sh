@@ -173,10 +173,69 @@ backFileMenu(){
     fi
 }
 
+chooseEditor(){
+    editorText=0
+    isEnter=false
+    selected=0
+    options=("Vim Editor" "Nano Editor" "Kembali")
+    optionLength=${#options[@]}
+
+    while true
+    do
+        clear
+        showMenu
+
+        if [ $isEnter == true ]
+        then
+            if [ $selected == $(( optionLength - 1)) ]
+            then
+                fileMenu
+            else
+                editorText=$selected
+                writeFile
+            fi
+        fi
+    done
+}
+
+writeFile(){
+    isEnter=false
+    selected=0
+    # options=("Vim Editor" "Nano Editor" "Kembali")
+    allFile=`ls *.sh *.c *.cpp *.html *.js *.html`
+    allMenu="${allFile} Kembali"
+    options=($allMenu)
+    optionLength=${#options[@]}
+
+    while true
+    do
+        clear
+        showMenu
+
+        if [ $isEnter == true ]
+        then
+            isEnter=false
+
+            if [ $selected == $(( optionLength - 1)) ]
+            then
+                fileMenu
+            else
+                if [ $editorText == "0" ]
+                then
+                    vi "${options[$selected]}"    
+                else    
+                    nano "${options[$selected]}" 
+                fi   
+            fi
+
+        fi
+    done
+}
+
 fileMenu(){
     isEnter=false
     selected=0
-    options=("Buat Folder" "Buat File" "Hapus Folder" "Hapus File" "Lihat semua berkas" "Kembali")
+    options=("Edit File" "Buat Folder" "Buat File" "Hapus Folder" "Hapus File" "Lihat semua berkas" "Kembali")
     optionLength=${#options[@]}
 
     while true
@@ -189,6 +248,10 @@ fileMenu(){
             isEnter=false
             case $selected in
                 "0") # create folder
+                    chooseEditor
+                    read -p "Enter untuk kembali..."
+                    ;;
+                "1") # create folder
                     echo -n "nama folder (tekan enter untuk kembali) : "
                     read foldername
 
@@ -205,7 +268,7 @@ fileMenu(){
                     fi
                     read -p "Enter untuk kembali..."
                     ;;
-                "1") # create file
+                "2") # create file
                     echo -n "nama file (tekan enter untuk kembali) : "
                     read filename
                     
@@ -221,7 +284,7 @@ fileMenu(){
                     fi
                     read -p "Enter untuk kembali..."
                     ;;
-                "2") # delete folder
+                "3") # delete folder
                     echo -n "Nama Folder (tekan enter untuk kembali) : "
                     read foldername
 
@@ -237,7 +300,7 @@ fileMenu(){
                     fi
                     read -p "Enter untuk kembali..."
                     ;;
-                "3") # delete file
+                "4") # delete file
                     echo -n "Nama File (tekan enter untuk kembali) : "
                     read filename
 
@@ -254,10 +317,10 @@ fileMenu(){
                     read -p "Enter untuk kembali..."
 
                     ;;
-                "4")
+                "5")
                     showAllFile
                     ;;
-                "5")
+                "6")
                     main
                     ;;
             esac
