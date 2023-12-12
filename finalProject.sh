@@ -65,6 +65,7 @@ openBrowser(){
 executeProgram(){
     jsFile=`ls *.js`
     pyFile=`ls *.py`
+    clear
 
     isEnter=false
     selected=0
@@ -72,10 +73,22 @@ executeProgram(){
     options=($allfile)
     optionLength=${#options[@]}
 
+    if [ "$jsFile" = "" -a "$pyFile" = "" ]
+    then
+        echo "${RED_COL}file program tidak ditemukan${NC}"
+        read -p "tekan enter untuk kembali...."
+        main
+    fi
+
     while true
     do
         clear
         showMenu
+
+        if [ $optionLength <= 1 ]
+        then
+            echo "tidak menemukan file pemrograman"
+        fi
 
         if [ $isEnter == true ]
         then
@@ -104,7 +117,6 @@ executeProgram(){
             isEnter=false
         fi
     done
-    read -p "tekan enter untuk kembali...."
 }
 
 createMenu(){
@@ -146,16 +158,19 @@ createMenu(){
 }
 
 showAllFile(){
-    yourfilenames=`ls -l *.*`
-    for filename in $yourfilenames
+    allFile=`ls`
+    for filename in $allFile
     do
         echo $filename
-        # show the extention
-        # filenamedata=$(basename -- $filename)
-        # extension="${filenamedata##*.}"
-        # echo $extension
     done
     read -p "tekan enter untuk kembali...."
+}
+
+backFileMenu(){
+    if [ "${1}" == "" ] # back to file menu
+    then
+        fileMenu
+    fi
 }
 
 fileMenu(){
@@ -171,10 +186,15 @@ fileMenu(){
         # when user press enter
         if [ $isEnter == true ]
         then
+            isEnter=false
             case $selected in
                 "0") # create folder
-                    echo -n "nama folder : "
+                    echo -n "nama folder (tekan enter untuk kembali) : "
                     read foldername
+
+                    # if user input empty string
+                    backFileMenu $foldername
+
                     # check is file exist
                     if [ -e "${foldername}" ]
                     then
@@ -186,8 +206,12 @@ fileMenu(){
                     read -p "Enter untuk kembali..."
                     ;;
                 "1") # create file
-                    echo -n "nama file : "
+                    echo -n "nama file (tekan enter untuk kembali) : "
                     read filename
+                    
+                    # if user input empty string
+                    backFileMenu $filename
+
                     if [ -e "${filename}" ]
                     then
                         echo "${RED_COL}file sudah ada${NC}"
@@ -198,8 +222,12 @@ fileMenu(){
                     read -p "Enter untuk kembali..."
                     ;;
                 "2") # delete folder
-                    echo -n "Nama Folder : "
+                    echo -n "Nama Folder (tekan enter untuk kembali) : "
                     read foldername
+
+                    # if user input empty string
+                    backFileMenu $foldername
+
                     if [ -e "${foldername}" ]
                     then
                         rmdir "${foldername}"
@@ -210,8 +238,12 @@ fileMenu(){
                     read -p "Enter untuk kembali..."
                     ;;
                 "3") # delete file
-                    echo -n "Nama File : "
+                    echo -n "Nama File (tekan enter untuk kembali) : "
                     read filename
+
+                    # if user input empty string
+                    backFileMenu $filename
+
                     if [ -e "${filename}" ]
                     then
                         rm "${filename}"
@@ -229,7 +261,6 @@ fileMenu(){
                     main
                     ;;
             esac
-            isEnter=false
         fi
     done
 }
@@ -240,24 +271,3 @@ main(){
 }
 
 main
-
-# options=("controller" "contr")
-# if [ -e "${options[1]}" ]
-# then
-#     echo "file ada"
-# else
-#     echo "file tidak ada"
-# fi
-
-# filename=$(basename -- "hello.py")
-# extension="${filename##*.}"
-
-# echo $extension
-
-# foldername=`ls -d */`
-# stringlength="${#foldername}"
-# echo $foldername | cut -c "1-$(( stringlength - 1 ))"
-
-# newString="hello world"
-# lengthWord="${#newString}"
-# echo $(( lengthWord - 1))
