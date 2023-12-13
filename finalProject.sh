@@ -6,9 +6,37 @@ SELECTOR_COL=$'\e[1;32m'
 NC=$'\e[0m'
 RED_COL=$'\e[1;31m'
 GREEN_COL=$'\e[1;32m'
+YELLOW_COL=$'\e[1;33m'
 BLUE_COL=$'\e[1;34m'
 PURPLE_COL=$'\e[1;35m'
 CYAN_COL=$'\e[1;36m'
+WHITE_COL=$'\e[1;37m'
+
+showLogo(){
+
+    echo "${YELLOW_COL}                  #######                     "
+    echo "${YELLOW_COL}               ############                   "
+    echo "${YELLOW_COL}            ##################                "
+    echo "${YELLOW_COL}         ########################             "
+    echo "${YELLOW_COL}       ############################           "
+    echo "${YELLOW_COL}    #################################         "
+    echo "${YELLOW_COL}  #########${RED_COL}####${YELLOW_COL}############${RED_COL}####${YELLOW_COL}########       "
+    echo "${YELLOW_COL} #########${RED_COL}#####${YELLOW_COL}####${WHITE_COL}####${YELLOW_COL}####${RED_COL}#####${YELLOW_COL}#########     "
+    echo "${YELLOW_COL}#########${RED_COL}#####${YELLOW_COL}####${WHITE_COL}######${YELLOW_COL}####${RED_COL}#####${YELLOW_COL}#########    "
+    echo "${YELLOW_COL}#######${RED_COL}#####${YELLOW_COL}####${WHITE_COL}##########${YELLOW_COL}####${RED_COL}#####${YELLOW_COL}#######    "
+    echo "${YELLOW_COL}#######${RED_COL}######${YELLOW_COL}###${WHITE_COL}##########${YELLOW_COL}###${RED_COL}######${YELLOW_COL}#######    "
+    echo "${YELLOW_COL} #######${RED_COL}#####${YELLOW_COL}###${WHITE_COL}#########${YELLOW_COL}####${RED_COL}#####${YELLOW_COL}#######     "
+    echo "${YELLOW_COL} ######${RED_COL}#####${YELLOW_COL}######${WHITE_COL}######${YELLOW_COL}######${RED_COL}#####${YELLOW_COL}######     "
+    echo "${YELLOW_COL}  #####${RED_COL}#######${YELLOW_COL}#####${WHITE_COL}####${YELLOW_COL}#####${RED_COL}#######${YELLOW_COL}######     "
+    echo "${YELLOW_COL}  #####${WHITE_COL}##${RED_COL}#######${YELLOW_COL}${WHITE_COL}##########${YELLOW_COL}#${RED_COL}######${YELLOW_COL}${WHITE_COL}##${YELLOW_COL}#####      "
+    echo "${YELLOW_COL}   ####.${WHITE_COL}######${RED_COL}##${YELLOW_COL}${WHITE_COL}##########${YELLOW_COL}${RED_COL}##${YELLOW_COL}${WHITE_COL}########${YELLOW_COL}###       "
+    echo "${YELLOW_COL}    ########${WHITE_COL}#####${YELLOW_COL}#######.${WHITE_COL}####${YELLOW_COL}##########       "
+    echo "${YELLOW_COL}    ##################################        "
+    echo "${YELLOW_COL}      ### ${WHITE_COL}UPN Veteran Jawa Timur${YELLOW_COL} ####         "
+    echo "${YELLOW_COL}       ############################           "
+    echo "${YELLOW_COL}           ####################               ${NC}"
+
+}
 
 readKeyboard(){
     # read the keyboard input
@@ -39,15 +67,22 @@ readKeyboard(){
 }
 
 showMenu(){
+    echo -e "\n\n\n"
+    echo "========================================================"
+    echo "|             WELCOME TO MANAGER CLI APP               |"
+    echo "========================================================"
+    echo "|                                                      |"
     for i in "${!options[@]}"
     do 
         if [ $selected -eq $i ]
         then
-            echo "${SELECTOR_COL}> ${options[$i]}${NC}"
+            echo "${SELECTOR_COL}|          -> ${options[$i]}${NC}"
         else
-            echo "${NC}  ${options[$i]}"
+            echo "${NC}|             ${options[$i]}"
         fi
     done
+    echo "|                                                      |"
+    echo "========================================================"
 
     readKeyboard
 }
@@ -408,4 +443,8 @@ main(){
     createMenu "${options[@]}"
 }
 
+showLogo
+echo
+read -p "Tekan Enter Untuk Lanjut.................."
 main
+
