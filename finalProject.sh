@@ -12,30 +12,43 @@ PURPLE_COL=$'\e[1;35m'
 CYAN_COL=$'\e[1;36m'
 WHITE_COL=$'\e[1;37m'
 
+batteryPercentage=""
+
+checkBattery(){
+    battery_info=$(acpi)
+
+    percentage=$(echo "$battery_info" | grep -oP '\d+%' | tr -d '%')
+
+    batteryPercentage="${GREEN_COL}${percentage}%${NC}"
+    # echo "Baterai kamu saat ini : ${SELECTOR_COL}$percentage%${NC}"
+    # read -p "tekan enter untuk kembali...."
+}
+
 showLogo(){
-
-    echo "${YELLOW_COL}                  #######                     "
-    echo "${YELLOW_COL}               ############                   "
-    echo "${YELLOW_COL}            ##################                "
-    echo "${YELLOW_COL}         ########################             "
-    echo "${YELLOW_COL}       ############################           "
-    echo "${YELLOW_COL}    #################################         "
-    echo "${YELLOW_COL}  #########${RED_COL}####${YELLOW_COL}############${RED_COL}####${YELLOW_COL}########       "
-    echo "${YELLOW_COL} #########${RED_COL}#####${YELLOW_COL}####${WHITE_COL}####${YELLOW_COL}####${RED_COL}#####${YELLOW_COL}#########     "
-    echo "${YELLOW_COL}#########${RED_COL}#####${YELLOW_COL}####${WHITE_COL}######${YELLOW_COL}####${RED_COL}#####${YELLOW_COL}#########    "
-    echo "${YELLOW_COL}#######${RED_COL}#####${YELLOW_COL}####${WHITE_COL}##########${YELLOW_COL}####${RED_COL}#####${YELLOW_COL}#######    "
-    echo "${YELLOW_COL}#######${RED_COL}######${YELLOW_COL}###${WHITE_COL}##########${YELLOW_COL}###${RED_COL}######${YELLOW_COL}#######    "
-    echo "${YELLOW_COL} #######${RED_COL}#####${YELLOW_COL}###${WHITE_COL}#########${YELLOW_COL}####${RED_COL}#####${YELLOW_COL}#######     "
-    echo "${YELLOW_COL} ######${RED_COL}#####${YELLOW_COL}######${WHITE_COL}######${YELLOW_COL}######${RED_COL}#####${YELLOW_COL}######     "
-    echo "${YELLOW_COL}  #####${RED_COL}#######${YELLOW_COL}#####${WHITE_COL}####${YELLOW_COL}#####${RED_COL}#######${YELLOW_COL}######     "
-    echo "${YELLOW_COL}  #####${WHITE_COL}##${RED_COL}#######${YELLOW_COL}${WHITE_COL}##########${YELLOW_COL}#${RED_COL}######${YELLOW_COL}${WHITE_COL}##${YELLOW_COL}#####      "
-    echo "${YELLOW_COL}   ####.${WHITE_COL}######${RED_COL}##${YELLOW_COL}${WHITE_COL}##########${YELLOW_COL}${RED_COL}##${YELLOW_COL}${WHITE_COL}########${YELLOW_COL}###       "
-    echo "${YELLOW_COL}    ########${WHITE_COL}#####${YELLOW_COL}#######.${WHITE_COL}####${YELLOW_COL}##########       "
-    echo "${YELLOW_COL}    ##################################        "
-    echo "${YELLOW_COL}      ### ${WHITE_COL}UPN Veteran Jawa Timur${YELLOW_COL} ####         "
-    echo "${YELLOW_COL}       ############################           "
-    echo "${YELLOW_COL}           ####################               ${NC}"
-
+    clear
+    echo -e "\n\n\n"
+    echo "                       ${YELLOW_COL}                  #######                     "
+    echo "                       ${YELLOW_COL}               ############                   "
+    echo "                       ${YELLOW_COL}            ##################                "
+    echo "                       ${YELLOW_COL}         ########################             "
+    echo "                       ${YELLOW_COL}       ############################           "
+    echo "                       ${YELLOW_COL}    #################################         "
+    echo "                       ${YELLOW_COL}  #########${RED_COL}####${YELLOW_COL}############${RED_COL}####${YELLOW_COL}########       "
+    echo "                       ${YELLOW_COL} #########${RED_COL}#####${YELLOW_COL}####${WHITE_COL}####${YELLOW_COL}####${RED_COL}#####${YELLOW_COL}#########     "
+    echo "                       ${YELLOW_COL}#########${RED_COL}#####${YELLOW_COL}####${WHITE_COL}######${YELLOW_COL}####${RED_COL}#####${YELLOW_COL}#########    "
+    echo "                       ${YELLOW_COL}#######${RED_COL}#####${YELLOW_COL}####${WHITE_COL}##########${YELLOW_COL}####${RED_COL}#####${YELLOW_COL}#######    "
+    echo "                       ${YELLOW_COL}#######${RED_COL}######${YELLOW_COL}###${WHITE_COL}##########${YELLOW_COL}###${RED_COL}######${YELLOW_COL}#######    "
+    echo "                       ${YELLOW_COL} #######${RED_COL}#####${YELLOW_COL}###${WHITE_COL}#########${YELLOW_COL}####${RED_COL}#####${YELLOW_COL}#######     "
+    echo "                       ${YELLOW_COL} ######${RED_COL}#####${YELLOW_COL}######${WHITE_COL}######${YELLOW_COL}######${RED_COL}#####${YELLOW_COL}######     "
+    echo "                       ${YELLOW_COL}  #####${RED_COL}#######${YELLOW_COL}#####${WHITE_COL}####${YELLOW_COL}#####${RED_COL}#######${YELLOW_COL}######     "
+    echo "                       ${YELLOW_COL}  #####${WHITE_COL}##${RED_COL}#######${YELLOW_COL}${WHITE_COL}##########${YELLOW_COL}#${RED_COL}######${YELLOW_COL}${WHITE_COL}##${YELLOW_COL}#####      "
+    echo "                       ${YELLOW_COL}   ####.${WHITE_COL}######${RED_COL}##${YELLOW_COL}${WHITE_COL}##########${YELLOW_COL}${RED_COL}##${YELLOW_COL}${WHITE_COL}########${YELLOW_COL}###       "
+    echo "                       ${YELLOW_COL}    ########${WHITE_COL}#####${YELLOW_COL}#######.${WHITE_COL}####${YELLOW_COL}##########       "
+    echo "                       ${YELLOW_COL}    ##################################        "
+    echo "                       ${YELLOW_COL}      ### ${WHITE_COL}UPN Veteran Jawa Timur${YELLOW_COL} ####         "
+    echo "                       ${YELLOW_COL}       ############################           "
+    echo "                       ${YELLOW_COL}           ####################               ${NC}"
+    echo
 }
 
 readKeyboard(){
@@ -67,33 +80,25 @@ readKeyboard(){
 }
 
 showMenu(){
-    echo -e "\n\n\n"
-    echo "========================================================"
-    echo "|             WELCOME TO MANAGER CLI APP               |"
-    echo "========================================================"
-    echo "|                                                      |"
+    echo 
+    echo -e "\n\n\n\n\n"
+    echo "                  ========================================================"
+    echo "                  |             WELCOME TO MANAGER CLI APP          ${batteryPercentage}  |"
+    echo "                  ========================================================"
+    echo "                  |                                                      |"
     for i in "${!options[@]}"
     do 
         if [ $selected -eq $i ]
         then
-            echo "${SELECTOR_COL}|          -> ${options[$i]}${NC}"
+            echo "${SELECTOR_COL}                  |          -> ${options[$i]}${NC}"
         else
-            echo "${NC}|             ${options[$i]}"
+            echo "${NC}                  |             ${options[$i]}"
         fi
     done
-    echo "|                                                      |"
-    echo "========================================================"
+    echo "                  |                                                      |"
+    echo "                  ========================================================"
 
     readKeyboard
-}
-
-checkBattery(){
-    battery_info=$(acpi)
-
-    percentage=$(echo "$battery_info" | grep -oP '\d+%' | tr -d '%')
-
-    echo "Baterai kamu saat ini : ${SELECTOR_COL}$percentage%${NC}"
-    read -p "tekan enter untuk kembali...."
 }
 
 openBrowser(){
@@ -180,10 +185,7 @@ createMenu(){
         "2") # execute code 
             executeProgram
             ;;
-        "3") # cek battery
-            checkBattery
-            ;;
-        "4")
+        "3")
             exit
             ;;
     esac
@@ -439,7 +441,8 @@ fileMenu(){
 }
 
 main(){
-    options=("Manipulasi Folder" "Buka Browser" "Eksekusi Program" "Cek Baterai" "Keluar Aplikasi")
+    checkBattery
+    options=("Manipulasi Folder" "Buka Browser" "Eksekusi Program" "Keluar Aplikasi")
     createMenu "${options[@]}"
 }
 
