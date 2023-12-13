@@ -403,7 +403,7 @@ fileMenu(){
                     if [ -e "${foldername}" ]
                     then
                         rmdir "${foldername}"
-                        echo "${GREEN_COL}folder berhasil dihapus${NC}"
+                        echo "${GREEN_COL}folder ${foldername} berhasil dihapus${NC}"
                     else
                         echo "${RED_COL}folder ${foldername} tidak ada${NC}"
                     fi
@@ -419,7 +419,7 @@ fileMenu(){
                     if [ -e "${filename}" ]
                     then
                         rm "${filename}"
-                        echo "${GREEN_COL}file berhasil dihapus${NC}"
+                        echo "${GREEN_COL}file ${filename} berhasil dihapus${NC}"
                     else
                         echo "${RED_COL}file ${filename} tidak ada${NC}"
                     fi
