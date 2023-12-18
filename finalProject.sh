@@ -42,8 +42,8 @@ showLogo(){
     echo "                       ${YELLOW_COL} ######${RED_COL}#####${YELLOW_COL}######${WHITE_COL}######${YELLOW_COL}######${RED_COL}#####${YELLOW_COL}######     "
     echo "                       ${YELLOW_COL}  #####${RED_COL}#######${YELLOW_COL}#####${WHITE_COL}####${YELLOW_COL}#####${RED_COL}#######${YELLOW_COL}######     "
     echo "                       ${YELLOW_COL}  #####${WHITE_COL}##${RED_COL}#######${YELLOW_COL}${WHITE_COL}##########${YELLOW_COL}#${RED_COL}######${YELLOW_COL}${WHITE_COL}##${YELLOW_COL}#####      "
-    echo "                       ${YELLOW_COL}   ####.${WHITE_COL}######${RED_COL}##${YELLOW_COL}${WHITE_COL}##########${YELLOW_COL}${RED_COL}##${YELLOW_COL}${WHITE_COL}########${YELLOW_COL}###       "
-    echo "                       ${YELLOW_COL}    ########${WHITE_COL}#####${YELLOW_COL}#######.${WHITE_COL}####${YELLOW_COL}##########       "
+    echo "                       ${YELLOW_COL}   #####${WHITE_COL}######${RED_COL}##${YELLOW_COL}${WHITE_COL}##########${YELLOW_COL}${RED_COL}##${YELLOW_COL}${WHITE_COL}########${YELLOW_COL}###       "
+    echo "                       ${YELLOW_COL}    ########${WHITE_COL}#####${YELLOW_COL}########${WHITE_COL}####${YELLOW_COL}##########       "
     echo "                       ${YELLOW_COL}    ##################################        "
     echo "                       ${YELLOW_COL}      ### ${WHITE_COL}UPN Veteran Jawa Timur${YELLOW_COL} ####         "
     echo "                       ${YELLOW_COL}       ############################           "
@@ -442,7 +442,7 @@ fileMenu(){
 
 main(){
     checkBattery
-    options=("Manipulasi Folder" "Buka Browser" "Eksekusi Program" "Keluar Aplikasi")
+    options=("Manipulasi Berkas" "Buka Browser" "Eksekusi Program" "Keluar Aplikasi")
     createMenu "${options[@]}"
 }
 
